@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 on:
   push:	
-    branches:	
-      - master
+    tag:	
+      - v.*
 
 jobs:
   deploy:
@@ -25,4 +25,4 @@ jobs:
         REPO: self
         BRANCH: gh-pages
         FOLDER: dist
-        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
