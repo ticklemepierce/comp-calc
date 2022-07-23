@@ -1,27 +1,23 @@
 name: Build gh-pages
 on:  
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 jobs:
   build-gh-pages:
     runs-on: ubuntu-latest      
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - run: yarn install
-      - run: yarn build-github
-      - name: Commit files
-        id: auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: build project for github pages
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: No changes detected
-        if: steps.auto-commit-action.outputs.changes_detected == 'false'
-        run: echo "No changes!"
+      - run: yarn build
+
+      - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: gh-pages
+        FOLDER: dist
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
