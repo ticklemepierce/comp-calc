@@ -3,13 +3,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { 
   Box,
   CssBaseline,
-  FormControlLabel,
   useMediaQuery,
 } from '@mui/material';
 import { MaterialUISwitch as Switch } from './components/switch';
-import * as styles from './app.module.css';
+import { Content } from './components/content';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {}, isDarkMode: () => false});
+const ColorModeContext = React.createContext({ toggleColorMode: () => {}, isDarkMode: false});
 
 export const MyApp = () => {
   const colorMode = React.useContext(ColorModeContext);
@@ -25,12 +24,12 @@ export const MyApp = () => {
           color: 'text.primary',
           borderRadius: 1,
           p: 3,
+          justifyContent: 'end'
         }}
       >
-        <div className={styles.colorModeToggle}>
-          <Switch sx={{ m: 1 }} checked={!colorMode.isDarkMode()} onChange={colorMode.toggleColorMode}/>
-        </div>
+        <Switch sx={{ m: 1 }} checked={!colorMode.isDarkMode} onChange={colorMode.toggleColorMode}/>
       </Box>
+      <Content />
     </>
 
   );
@@ -45,7 +44,7 @@ export const App = () => {
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
-      isDarkMode: () => mode === 'dark',
+      isDarkMode: mode === 'dark',
     }),
     [mode],
   );
@@ -67,7 +66,7 @@ export const App = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <MyApp prefersDarkMode={prefersDarkMode} />
+        <MyApp />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
