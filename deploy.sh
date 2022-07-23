@@ -1,5 +1,3 @@
-rm -rf .parcel-cache
-
 yarn build
 
 git subtree split --prefix dist -b gh-pages
