@@ -28,8 +28,11 @@ export const TimeInput = ({ id }: {id: string }) => {
     const name = event.target.name;
     const type = name.split('-')[1] as keyof IMaxMap;
     const max = MAX_MAP[type] as number;
+    if (!Number.isInteger(Number(event.target.value))) {
+      return;
+    }
     const val = parseInt(event.target.value, 10);
-    if (val > max) {
+    if (val > max || Number.isNaN(val)) {
       return;
     }
     setValue((value) => ({
@@ -85,7 +88,7 @@ export const TimeInput = ({ id }: {id: string }) => {
           margin: theme.spacing(2),
           width: '100px',
         }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 3 }}
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
       />
