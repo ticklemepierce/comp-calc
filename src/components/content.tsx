@@ -10,12 +10,21 @@ import {
   Paper,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { TimeInput } from './time-input';
+import { TimeInput, IMaxMap } from './time-input';
 import { ResultsDialog } from './results-dialog';
+
+interface ITimeMap {
+  first: string;
+  second: string;
+  third: string;
+  fourth: string;
+}
 
 function average(nums: Array<number>) {
   return nums.reduce((a, b) => (a + b)) / nums.length;
 }
+
+const timesInMilliseconds = (min: number, sec: number, ms: number) => ms + (min * 60 * 1000) + (sec * 1000);
 
 export const Content = () => {
   const theme = useTheme();
@@ -28,35 +37,44 @@ export const Content = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.currentTarget));
+    const data = Array.from(new FormData(event.currentTarget).entries());
 
-    const sortedTimes = [
-      parseFloat(data.first as string),
-      parseFloat(data.second as string),
-      parseFloat(data.third as string),
-      parseFloat(data.fourth as string),
-    ].sort();
-
-    setTimes(sortedTimes);
-    
-    const bpa = average(sortedTimes.slice(0,3));
-    const wpa = average(sortedTimes.slice(1,4));
-
-    const subXPossibilities = [];
-    for (var i = Math.ceil(bpa); i <= Math.floor(wpa); i++) {
-      subXPossibilities.push(i);
-    } 
-
-    console.log("Best possible average: ", bpa.toFixed(2));
-    console.log("Worst possible average: ", wpa.toFixed(2));
-
-    subXPossibilities.forEach(subXPossible => {
-      let needed = (subXPossible) * 3 - sortedTimes[1] - sortedTimes[2];
-      if (average([needed, sortedTimes[1], sortedTimes[2]]) === subXPossible) {
-        needed -= 0.01
+    const reduced = data.reduce(
+      (prev, [key, val]) => {
+        if (typeof val !== 'string') {
+          throw new Error();
+        }
+        if (val === '') {
+          val = '0';
+        }
+        const _key = key.split('-');
+        const time = _key[0] as keyof ITimeMap;
+        const type = _key[1] as keyof IMaxMap;
+        return {
+          ...prev,
+          [time]: {
+            ...prev[time],
+            [type]: parseInt(val, 10)
+          }
+        }
+      }, 
+      { 
+        'first': {},
+        'second': {},
+        'third': {},
+        'fourth': {},
       }
-      console.log(`Needed for sub-${subXPossible}: ${needed.toFixed(2)}`);
+    );
+
+    const times: number[] = [];
+
+    ['first', 'second', 'third', 'fourth'].forEach(time => {
+      const entry = reduced[time as keyof ITimeMap] as IMaxMap;
+      const timeInSeconds = timesInMilliseconds(entry.minutes, entry.seconds, entry.milliseconds) / 1000;
+      times.push(timeInSeconds);
     });
+
+    setTimes(times);
   }
 
   return (
@@ -82,10 +100,10 @@ export const Content = () => {
             flexWrap: 'wrap',
           }}
         >
-          <TimeInput label={'first time'} id={'first'}/>
-          <TimeInput label={'second time'} id={'second'} />
-          <TimeInput label={'third time'} id={'third'} />
-          <TimeInput label={'fourth time'} id={'fourth'} />
+          <TimeInput id={'first'}/>
+          <TimeInput id={'second'} />
+          <TimeInput id={'third'} />
+          <TimeInput id={'fourth'} />
 
           <Button 
             type='submit'

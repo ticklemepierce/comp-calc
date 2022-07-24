@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from 'react';
 import { Box, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-interface IMaxMap {
+export interface IMaxMap {
   minutes: number;
   seconds: number;
   milliseconds: number;
@@ -14,7 +14,7 @@ const MAX_MAP: IMaxMap = {
   milliseconds: 999,
 }
 
-export const TimeInput = ({ label, id }: { label: string, id: string }) => {
+export const TimeInput = ({ id }: {id: string }) => {
   const theme = useTheme();
 
   const [value, setValue] = useState({
@@ -25,7 +25,8 @@ export const TimeInput = ({ label, id }: { label: string, id: string }) => {
   const [error, setError] = useState<string | null>();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const type = event.target.name as keyof IMaxMap;
+    const name = event.target.name;
+    const type = name.split('-')[1] as keyof IMaxMap;
     const max = MAX_MAP[type] as number;
     const val = parseInt(event.target.value, 10);
     if (val > max) {
@@ -33,7 +34,7 @@ export const TimeInput = ({ label, id }: { label: string, id: string }) => {
     }
     setValue((value) => ({
       ...value,
-      [event.target.name]: event.target.value
+      [type]: event.target.value
     }));
   };
 
@@ -49,21 +50,21 @@ export const TimeInput = ({ label, id }: { label: string, id: string }) => {
     >
       <TextField
         label={"minutes"}
-        name={"minutes"}
+        name={`${id}-minutes`}
         value={value.minutes}
         variant="outlined"
         sx={{
           margin: theme.spacing(2),
           width: '100px',
         }}
-        inputProps={{ inputMode: 'numeric', max: '9' }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
       />     
       : 
       <TextField
         label={"seconds"}
-        name={"seconds"}
+        name={`${id}-seconds`}
         value={value.seconds}
         variant="outlined"
         sx={{
@@ -77,7 +78,7 @@ export const TimeInput = ({ label, id }: { label: string, id: string }) => {
       .
       <TextField
         label={"milliseconds"}
-        name={"milliseconds"}
+        name={`${id}-milliseconds`}
         value={value.milliseconds}
         variant="outlined"
         sx={{

@@ -1,38 +1,14 @@
-import { MouseEventHandler, useEffect, useState, useRef } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import {  
-  Box,
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
-  Divider,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableRow,
-  Paper,
-  Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-
-function hmsToSecondsOnly(str: string) {
-  const p = str.split(':');
-  let sec = 0;
-  let min = 1;
-
-  while (p.length > 0) {
-    const int = p.pop();
-    if (int) {
-      sec += min * parseInt(int, 10);
-      min *= 60;
-    }
-  }
-
-  return sec;
-}
 
 const createData = (name: string, time: number) => ({ name, time });
 
@@ -46,13 +22,13 @@ export const ResultsDialog = ({times, onClose }: {times: Array<number>, onClose:
 
   useEffect(() => {
     if (times.length) {
+      const sortedTimes = times.sort();
       const rowsObj = [];
-      const bpa = average(times.slice(0,3));
-      const wpa = average(times.slice(1,4));
+      const bpa = average(sortedTimes.slice(0,3));
+      const wpa = average(sortedTimes.slice(1,4));
 
       rowsObj.push(createData('Best Possible Average', bpa));
       rowsObj.push(createData('Worst Possible Average', wpa));
-
 
       const subXPossibilities = [];
       for (var i = Math.ceil(bpa); i <= Math.floor(wpa); i++) {
@@ -60,8 +36,8 @@ export const ResultsDialog = ({times, onClose }: {times: Array<number>, onClose:
       } 
         
       subXPossibilities.forEach(subXPossible => {
-        let needed = (subXPossible) * 3 - times[1] - times[2];
-        if (average([needed, times[1], times[2]]) === subXPossible) {
+        let needed = (subXPossible) * 3 - sortedTimes[1] - sortedTimes[2];
+        if (average([needed, sortedTimes[1], sortedTimes[2]]) === subXPossible) {
           needed -= 0.01
         }
         rowsObj.push(createData(`Needed for sub-${subXPossible}`, needed));
