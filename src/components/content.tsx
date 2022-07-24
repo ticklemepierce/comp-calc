@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {  
   Box,
   Button,
@@ -25,8 +25,6 @@ export const Content = () => {
   const handleClose = () => {
     setTimes([]);
   };
-
-  const descriptionElementRef = useRef<HTMLElement>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

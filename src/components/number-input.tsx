@@ -1,52 +1,59 @@
-import { useState, forwardRef, ChangeEvent } from 'react';
+import { useState } from 'react';
+import { useIMask } from 'react-imask';
 import { TextField } from '@mui/material';
-import NumberFormat, { InputAttributes } from 'react-number-format';
 import { useTheme } from '@mui/material/styles';
-
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const NumberFormatCustom = forwardRef<
-  NumberFormat<InputAttributes>,
-  CustomProps
->(function NumberFormatCustom(props, ref) {
-  const { onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      isNumericString
-      allowNegative={false}
-      decimalScale={3}
-    />
-  );
-});
 
 export const NumberInput = ({ label, id }: { label: string, id: string }) => {
   const theme = useTheme();
 
-  const [value, setValue] = useState<string>();
   const [error, setError] = useState<string | null>();
 
-  const regex = /^[0-9]+\.[0-9]{2,3}/;
+  const regex = /^([0-9]{1,2}\:)?[0-9]{1,2}\.[0-9]{2,3}/;
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    if (error && regex.test(event.target.value)) {
+  const handleChange = (value: string) => {
+    setValue(value);
+    console.log(value);
+    if (error && regex.test(value)) {
       setError(null);
     }
   };
+
+  const iMaskOpts = {
+    mask: [
+      {
+        mask: '0[0]{:}00{.}000',
+        lazy: true,
+        minute: true,
+      },
+      {
+        mask: '0[0]{.}000',
+        lazy: true,
+        seconds: true,
+      },
+      {
+        mask: '0[0]',
+        lazy: true,
+        tbd: true,
+      }
+    ],     
+    dispatch: function (appended: string, dynamicMasked: any) {
+      let maskToUse = 'tbd';
+      if (appended === ':' || dynamicMasked.value.includes(':')) {
+        maskToUse = 'minute';
+      } else if (appended === '.' || dynamicMasked.value.includes('.')) {
+        maskToUse = 'seconds';
+      }
+      return dynamicMasked.compiledMasks.find(function (m: any) {
+        return m[maskToUse];
+      }); 
+    },
+  };
+
+  const {
+    ref,
+    value,
+    setValue,
+  } = useIMask(iMaskOpts, { onAccept: handleChange });
 
   const onBlur = () => {
     if (value)
@@ -59,11 +66,7 @@ export const NumberInput = ({ label, id }: { label: string, id: string }) => {
     <TextField
       label={label}
       value={value}
-      onChange={handleChange}
       name={id}
-      InputProps={{
-        inputComponent: NumberFormatCustom as any,
-      }}
       variant="outlined"
       fullWidth
       onBlur={onBlur}
@@ -72,6 +75,7 @@ export const NumberInput = ({ label, id }: { label: string, id: string }) => {
       sx={{
         marginTop: theme.spacing(4),
       }}
+      inputRef={ref}
     />
-  );
+  )
 }

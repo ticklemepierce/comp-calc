@@ -19,6 +19,22 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { NumberInput } from './number-input';
 
+function hmsToSecondsOnly(str: string) {
+  const p = str.split(':');
+  let sec = 0;
+  let min = 1;
+
+  while (p.length > 0) {
+    const int = p.pop();
+    if (int) {
+      sec += min * parseInt(int, 10);
+      min *= 60;
+    }
+  }
+
+  return sec;
+}
+
 const createData = (name: string, time: number) => ({ name, time });
 
 function average(nums: Array<number>) {
