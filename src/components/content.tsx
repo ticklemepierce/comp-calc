@@ -10,7 +10,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { NumberInput } from './number-input';
+import { TimeInput } from './time-input';
 import { ResultsDialog } from './results-dialog';
 
 function average(nums: Array<number>) {
@@ -72,11 +72,20 @@ export const Content = () => {
           },
         }}
       >
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <NumberInput label={'first time'} id={'first'}/>
-          <NumberInput label={'second time'} id={'second'} />
-          <NumberInput label={'third time'} id={'third'} />
-          <NumberInput label={'fourth time'} id={'fourth'} />
+        <Box 
+          component="form" 
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            justifyContent: 'center',
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}
+        >
+          <TimeInput label={'first time'} id={'first'}/>
+          <TimeInput label={'second time'} id={'second'} />
+          <TimeInput label={'third time'} id={'third'} />
+          <TimeInput label={'fourth time'} id={'fourth'} />
 
           <Button 
             type='submit'
