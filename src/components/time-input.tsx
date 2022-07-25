@@ -1,32 +1,24 @@
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { Box, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export interface IMaxMap {
-  minutes: number;
-  seconds: number;
-  milliseconds: number;
+interface IValue {
+  minutes: string;
+  seconds: string;
+  milliseconds: string;
 }
 
-const MAX_MAP: IMaxMap = {
+const MAX_MAP = {
   minutes: 59,
   seconds: 59,
   milliseconds: 999,
 }
 
-export const TimeInput = ({ id }: {id: string }) => {
+export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Function }) => {
   const theme = useTheme();
 
-  const [value, setValue] = useState({
-    minutes: '',
-    seconds: '',
-    milliseconds: '',
-  });
-  const [error, setError] = useState<string | null>();
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.name;
-    const type = name.split('-')[1] as keyof IMaxMap;
+    const type = event.target.name as keyof IValue;
     const max = MAX_MAP[type] as number;
     if (event.target.value.includes('.')) {
       return;
@@ -38,7 +30,7 @@ export const TimeInput = ({ id }: {id: string }) => {
     if (val > max || Number.isNaN(val)) {
       return;
     }
-    setValue((value) => ({
+    setValue((value: IValue) => ({
       ...value,
       [type]: event.target.value
     }));
@@ -58,7 +50,7 @@ export const TimeInput = ({ id }: {id: string }) => {
     >
       <TextField
         label={"minutes"}
-        name={`${id}-minutes`}
+        name={"minutes"}
         value={value.minutes}
         variant="outlined"
         sx={{
@@ -72,7 +64,7 @@ export const TimeInput = ({ id }: {id: string }) => {
       : 
       <TextField
         label={"seconds"}
-        name={`${id}-seconds`}
+        name={"seconds"}
         value={value.seconds}
         variant="outlined"
         sx={{
@@ -86,7 +78,7 @@ export const TimeInput = ({ id }: {id: string }) => {
       .
       <TextField
         label={"milliseconds"}
-        name={`${id}-milliseconds`}
+        name={"milliseconds"}
         value={value.milliseconds}
         variant="outlined"
         sx={{

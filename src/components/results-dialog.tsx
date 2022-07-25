@@ -16,11 +16,13 @@ function average(nums: Array<number>) {
   return nums.reduce((a, b) => (a + b)) / nums.length;
 }
 
-export const ResultsDialog = ({times, onClose }: {times: Array<number>, onClose: MouseEventHandler<HTMLButtonElement> }) => {
+// TODO remove open prop
+export const ResultsDialog = ({times, onClose, open }: {times: Array<number>, onClose: MouseEventHandler<HTMLButtonElement>, open: boolean }) => {
   // todo update any type
   const [rows, setRows] = useState<Array<any>>();
 
   useEffect(() => {
+    // TODO this if is probably not needed
     if (times.length) {
       const sortedTimes = times.sort();
       const rowsObj = [];
@@ -49,7 +51,7 @@ export const ResultsDialog = ({times, onClose }: {times: Array<number>, onClose:
 
   return (
     <Dialog
-      open={!!times.length}
+      open={open}
       onClose={onClose}
       scroll={'paper'}
       aria-labelledby="scroll-dialog-title"
