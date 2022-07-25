@@ -12078,6 +12078,7 @@ $parcel$export($c02ff5a208fd40b7$exports, "TableBody", () => $9fa4bdca55bc9b59$e
 $parcel$export($c02ff5a208fd40b7$exports, "TableCell", () => $688079f9c20238ed$export$2e2bcd8739ae039);
 $parcel$export($c02ff5a208fd40b7$exports, "TableRow", () => $86336a779a56c56e$export$2e2bcd8739ae039);
 $parcel$export($c02ff5a208fd40b7$exports, "TextField", () => $87b0d304f21f5b7f$export$2e2bcd8739ae039);
+$parcel$export($c02ff5a208fd40b7$exports, "Typography", () => $bebdf3a72854fb13$export$2e2bcd8739ae039);
 $parcel$export($c02ff5a208fd40b7$exports, "useMediaQuery", () => $c0e7915ae4d187ed$export$2e2bcd8739ae039);
 
 
@@ -21027,26 +21028,18 @@ var $d4J5n = parcelRequire("d4J5n");
 
 
 
-var $d4J5n = parcelRequire("d4J5n");
-
 
 const $7ad86949296a565b$var$MAX_MAP = {
     minutes: 59,
     seconds: 59,
     milliseconds: 999
 };
-const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
+const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: setValue  })=>{
     const theme = (0, $cb404980a6d8b614$export$2e2bcd8739ae039)();
-    const [value1, setValue] = (0, $d4J5n.useState)({
-        minutes: "",
-        seconds: "",
-        milliseconds: ""
-    });
-    const [error, setError] = (0, $d4J5n.useState)();
     const handleChange = (event)=>{
-        const name = event.target.name;
-        const type = name.split("-")[1];
+        const type = event.target.name;
         const max = $7ad86949296a565b$var$MAX_MAP[type];
+        if (event.target.value.includes(".")) return;
         if (!Number.isInteger(Number(event.target.value))) return;
         const val = parseInt(event.target.value, 10);
         if (val > max || Number.isNaN(val)) return;
@@ -21061,12 +21054,14 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
             color: "text.primary",
             borderRadius: 1,
             alignItems: "center",
-            fontSize: "48px"
+            fontSize: "48px",
+            flexBasis: "100%",
+            justifyContent: "center"
         },
         children: [
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
                 label: "minutes",
-                name: `${id}-minutes`,
+                name: "minutes",
                 value: value1.minutes,
                 variant: "outlined",
                 sx: {
@@ -21085,7 +21080,7 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
             ":",
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
                 label: "seconds",
-                name: `${id}-seconds`,
+                name: "seconds",
                 value: value1.seconds,
                 variant: "outlined",
                 sx: {
@@ -21104,7 +21099,7 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
             ".",
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
                 label: "milliseconds",
-                name: `${id}-milliseconds`,
+                name: "milliseconds",
                 value: value1.milliseconds,
                 variant: "outlined",
                 sx: {
@@ -21137,10 +21132,11 @@ const $11e00a0f549302b4$var$createData = (name, time)=>({
 function $11e00a0f549302b4$var$average(nums) {
     return nums.reduce((a, b)=>a + b) / nums.length;
 }
-const $11e00a0f549302b4$export$a7132da7ba65e0e = ({ times: times , onClose: onClose  })=>{
+const $11e00a0f549302b4$export$a7132da7ba65e0e = ({ times: times , onClose: onClose , open: open  })=>{
     // todo update any type
     const [rows, setRows] = (0, $d4J5n.useState)();
     (0, $d4J5n.useEffect)(()=>{
+        // TODO this if is probably not needed
         if (times.length) {
             const sortedTimes = times.sort();
             const rowsObj = [];
@@ -21165,7 +21161,7 @@ const $11e00a0f549302b4$export$a7132da7ba65e0e = ({ times: times , onClose: onCl
         times
     ]);
     return /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $d6f0347ecedd0ecf$export$2e2bcd8739ae039), {
-        open: !!times.length,
+        open: open,
         onClose: onClose,
         scroll: "paper",
         "aria-labelledby": "scroll-dialog-title",
@@ -21211,54 +21207,46 @@ const $11e00a0f549302b4$export$a7132da7ba65e0e = ({ times: times , onClose: onCl
 };
 
 
-function $63c221fb02ae68b7$var$average(nums) {
-    return nums.reduce((a, b)=>a + b) / nums.length;
-}
+const $63c221fb02ae68b7$var$SOLVES = [
+    "first",
+    "second",
+    "third",
+    "fourth",
+    "fifth"
+];
+const $63c221fb02ae68b7$var$DEFAULT_TIMES = {
+    minutes: "",
+    seconds: "",
+    milliseconds: ""
+};
+const $63c221fb02ae68b7$var$toOrdinal = (number)=>$63c221fb02ae68b7$var$SOLVES[number];
 const $63c221fb02ae68b7$var$timesInMilliseconds = (min, sec, ms)=>ms + min * 60000 + sec * 1000;
 const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
     const theme = (0, $cb404980a6d8b614$export$2e2bcd8739ae039)();
-    const [times1, setTimes] = (0, $d4J5n.useState)([]);
-    const handleClose = ()=>{
-        setTimes([]);
+    const [solveNum, setSolveNum] = (0, $d4J5n.useState)(0);
+    const [currentTime, setCurrentTime] = (0, $d4J5n.useState)($63c221fb02ae68b7$var$DEFAULT_TIMES);
+    const [dialogOpen, setDialogOpen] = (0, $d4J5n.useState)(false);
+    const [times, setTimes] = (0, $d4J5n.useState)([]);
+    const advanceToNextSolve = ()=>{
+        const min = parseInt(currentTime.minutes, 10) || 0;
+        const sec = parseInt(currentTime.seconds, 10) || 0;
+        const ms = parseInt(currentTime.milliseconds, 10) || 0;
+        setTimes((currentTimes)=>[
+                ...currentTimes,
+                $63c221fb02ae68b7$var$timesInMilliseconds(min, sec, ms) / 1000
+            ]);
+        setCurrentTime($63c221fb02ae68b7$var$DEFAULT_TIMES);
+        setSolveNum(solveNum + 1);
     };
-    const handleSubmit = (event)=>{
-        event.preventDefault();
-        const data = Array.from(new FormData(event.currentTarget).entries());
-        const reduced = data.reduce((prev, [key, val])=>{
-            if (typeof val !== "string") throw new Error();
-            if (val === "") val = "0";
-            const _key = key.split("-");
-            const time = _key[0];
-            const type = _key[1];
-            return {
-                ...prev,
-                [time]: {
-                    ...prev[time],
-                    [type]: parseInt(val, 10)
-                }
-            };
-        }, {
-            "first": {},
-            "second": {},
-            "third": {},
-            "fourth": {}
-        });
-        const times = [];
-        [
-            "first",
-            "second",
-            "third",
-            "fourth"
-        ].forEach((time)=>{
-            const entry = reduced[time];
-            const timeInSeconds = $63c221fb02ae68b7$var$timesInMilliseconds(entry.minutes, entry.seconds, entry.milliseconds) / 1000;
-            times.push(timeInSeconds);
-        });
-        setTimes(times);
+    const handleSubmit = ()=>{
+        advanceToNextSolve();
+        openDialog();
     };
+    const openDialog = ()=>setDialogOpen(true);
+    const closeDialog = ()=>setDialogOpen(false);
     return /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $f2d8fe790f2a3612$export$2e2bcd8739ae039), {
         children: [
-            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $af776c8e01c32094$export$2e2bcd8739ae039), {
+            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $af776c8e01c32094$export$2e2bcd8739ae039), {
                 elevation: 3,
                 sx: {
                     width: "50%",
@@ -21266,46 +21254,61 @@ const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
                     margin: theme.spacing(4, "auto"),
                     [theme.breakpoints.down("md")]: {
                         width: "95%"
-                    }
-                },
-                children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $f2d8fe790f2a3612$export$2e2bcd8739ae039), {
-                    component: "form",
-                    onSubmit: handleSubmit,
-                    noValidate: true,
-                    sx: {
-                        justifyContent: "center",
-                        display: "flex",
-                        flexWrap: "wrap"
                     },
-                    children: [
-                        /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $7ad86949296a565b$export$a1af6f79df847fac), {
-                            id: "first"
-                        }),
-                        /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $7ad86949296a565b$export$a1af6f79df847fac), {
-                            id: "second"
-                        }),
-                        /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $7ad86949296a565b$export$a1af6f79df847fac), {
-                            id: "third"
-                        }),
-                        /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $7ad86949296a565b$export$a1af6f79df847fac), {
-                            id: "fourth"
-                        }),
-                        /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $65c4d565b4687bd9$export$2e2bcd8739ae039), {
-                            type: "submit",
-                            variant: "contained",
-                            size: "large",
-                            fullWidth: true,
-                            sx: {
-                                marginTop: theme.spacing(3)
-                            },
-                            children: "Calculate best and worst possible averages"
-                        })
-                    ]
-                })
+                    textAlign: "center"
+                },
+                children: [
+                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $bebdf3a72854fb13$export$2e2bcd8739ae039), {
+                        variant: "h4",
+                        component: "h1",
+                        mb: 4,
+                        children: [
+                            "Enter time of ",
+                            $63c221fb02ae68b7$var$toOrdinal(solveNum),
+                            " solve"
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $f2d8fe790f2a3612$export$2e2bcd8739ae039), {
+                        component: "form",
+                        noValidate: true,
+                        sx: {
+                            justifyContent: "center",
+                            display: "flex",
+                            flexWrap: "wrap"
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $7ad86949296a565b$export$a1af6f79df847fac), {
+                                value: currentTime,
+                                setValue: setCurrentTime
+                            }),
+                            solveNum < 3 && /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $65c4d565b4687bd9$export$2e2bcd8739ae039), {
+                                onClick: advanceToNextSolve,
+                                variant: "contained",
+                                size: "large",
+                                fullWidth: true,
+                                sx: {
+                                    marginTop: theme.spacing(3)
+                                },
+                                children: "Advance to next solve"
+                            }),
+                            solveNum === 3 && /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $65c4d565b4687bd9$export$2e2bcd8739ae039), {
+                                onClick: handleSubmit,
+                                variant: "contained",
+                                size: "large",
+                                fullWidth: true,
+                                sx: {
+                                    marginTop: theme.spacing(3)
+                                },
+                                children: "Calculate best and worst possible averages"
+                            })
+                        ]
+                    })
+                ]
             }),
-            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $11e00a0f549302b4$export$a7132da7ba65e0e), {
-                times: times1,
-                onClose: handleClose
+            dialogOpen && /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $11e00a0f549302b4$export$a7132da7ba65e0e), {
+                open: dialogOpen,
+                times: times,
+                onClose: closeDialog
             })
         ]
     });
@@ -21381,4 +21384,4 @@ const $0bb323785d371b81$export$86fbec116b87613f = ()=>{
 }), document.getElementById("root"));
 
 
-//# sourceMappingURL=index.86793778.js.map
+//# sourceMappingURL=index.3a152576.js.map
