@@ -2,11 +2,6 @@ import { useState } from 'react';
 import {  
   Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Paper,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -18,10 +13,6 @@ interface ITimeMap {
   second: string;
   third: string;
   fourth: string;
-}
-
-function average(nums: Array<number>) {
-  return nums.reduce((a, b) => (a + b)) / nums.length;
 }
 
 const timesInMilliseconds = (min: number, sec: number, ms: number) => ms + (min * 60 * 1000) + (sec * 1000);
