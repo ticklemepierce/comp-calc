@@ -28,6 +28,9 @@ export const TimeInput = ({ id }: {id: string }) => {
     const name = event.target.name;
     const type = name.split('-')[1] as keyof IMaxMap;
     const max = MAX_MAP[type] as number;
+    if (event.target.value.includes('.')) {
+      return;
+    }
     if (!Number.isInteger(Number(event.target.value))) {
       return;
     }
@@ -48,7 +51,9 @@ export const TimeInput = ({ id }: {id: string }) => {
         color: 'text.primary',
         borderRadius: 1,
         alignItems: 'center',
-        fontSize: '48px'
+        fontSize: '48px',
+        flexBasis: '100%',
+        justifyContent: 'center',
       }}
     >
       <TextField
