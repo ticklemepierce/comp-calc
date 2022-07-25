@@ -14,12 +14,12 @@ const SOLVES = ['first', 'second', 'third', 'fourth', 'fifth'];
 const DEFAULT_TIMES = {
   minutes: '',
   seconds: '',
-  milliseconds: '',
+  centiseconds: '',
 }
 
 const toOrdinal = (number: number) => SOLVES[number];
 
-const timesInMilliseconds = (min: number, sec: number, ms: number) => ms + (min * 60 * 1000) + (sec * 1000);
+const timesInCentiseconds = (min: number, sec: number, cs: number) => cs + (min * 60 * 100) + (sec * 100);
 
 export const Content = () => {
   const theme = useTheme();
@@ -33,11 +33,11 @@ export const Content = () => {
   const advanceToNextSolve = () => {
     const min = parseInt(currentTime.minutes, 10) || 0;
     const sec = parseInt(currentTime.seconds, 10) || 0;
-    const ms = parseInt(currentTime.milliseconds, 10) || 0;
+    const cs = parseInt(currentTime.centiseconds, 10) || 0;
 
     setTimes((currentTimes) => ([
       ...currentTimes,
-      timesInMilliseconds(min, sec, ms) / 1000
+      timesInCentiseconds(min, sec, cs) / 100
     ]));
 
     setCurrentTime(DEFAULT_TIMES);
@@ -51,6 +51,10 @@ export const Content = () => {
 
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
+
+  const getFinalAverage = () => {
+    //TODO
+  }
   
   return (
     <Box>
@@ -103,6 +107,19 @@ export const Content = () => {
               }}
             >            
               Calculate best and worst possible averages
+            </Button>
+          }
+          {solveNum === 4 && 
+            <Button 
+              onClick={getFinalAverage}
+              variant="contained" 
+              size="large" 
+              fullWidth
+              sx={{
+                marginTop: theme.spacing(3),
+              }}
+            >            
+              Get final average
             </Button>
           }
         </Box>

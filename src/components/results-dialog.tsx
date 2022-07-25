@@ -22,10 +22,12 @@ export const ResultsDialog = ({times, onClose, open }: {times: Array<number>, on
   const [rows, setRows] = useState<Array<any>>();
 
   useEffect(() => {
+    console.log("Test");
     // TODO this if is probably not needed
     if (times.length) {
       const sortedTimes = times.sort();
       const rowsObj = [];
+      console.log(sortedTimes.slice(0,3));
       const bpa = average(sortedTimes.slice(0,3));
       const wpa = average(sortedTimes.slice(1,4));
 

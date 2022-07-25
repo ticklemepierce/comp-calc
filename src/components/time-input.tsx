@@ -5,20 +5,22 @@ import { useTheme } from '@mui/material/styles';
 interface IValue {
   minutes: string;
   seconds: string;
-  milliseconds: string;
+  centiseconds: string;
 }
 
 const MAX_MAP = {
   minutes: 59,
   seconds: 59,
-  milliseconds: 999,
+  centiseconds: 99,
 }
+
+const getRandomString = () => (Math.random() + 1).toString(36).substring(7) as string;
 
 export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Function }) => {
   const theme = useTheme();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const type = event.target.name as keyof IValue;
+    const type = event.target.labels![0].innerText as keyof IValue;
     const max = MAX_MAP[type] as number;
     if (event.target.value.includes('.')) {
       return;
@@ -50,42 +52,43 @@ export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Functio
     >
       <TextField
         label={"minutes"}
-        name={"minutes"}
+        name={getRandomString()}
         value={value.minutes}
         variant="outlined"
         sx={{
           margin: theme.spacing(2),
           width: '100px',
         }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
+        autoFocus={true}
       />     
       : 
       <TextField
         label={"seconds"}
-        name={"seconds"}
+        name={getRandomString()}
         value={value.seconds}
         variant="outlined"
         sx={{
           margin: theme.spacing(2),
           width: '100px',
         }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
       />
       .
       <TextField
-        label={"milliseconds"}
-        name={"milliseconds"}
-        value={value.milliseconds}
+        label={"centiseconds"}
+        name={getRandomString()}
+        value={value.centiseconds}
         variant="outlined"
         sx={{
           margin: theme.spacing(2),
           width: '100px',
         }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 3 }}
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}
         onChange={handleChange}
       />
