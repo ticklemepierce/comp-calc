@@ -21047,8 +21047,9 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
         const name = event.target.name;
         const type = name.split("-")[1];
         const max = $7ad86949296a565b$var$MAX_MAP[type];
+        if (!Number.isInteger(Number(event.target.value))) return;
         const val = parseInt(event.target.value, 10);
-        if (val > max) return;
+        if (val > max || Number.isNaN(val)) return;
         setValue((value)=>({
                 ...value,
                 [type]: event.target.value
@@ -21112,7 +21113,8 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ id: id  })=>{
                 },
                 inputProps: {
                     inputMode: "numeric",
-                    pattern: "[0-9]*"
+                    pattern: "[0-9]*",
+                    maxLength: 3
                 },
                 InputLabelProps: {
                     shrink: true
@@ -21379,4 +21381,4 @@ const $0bb323785d371b81$export$86fbec116b87613f = ()=>{
 }), document.getElementById("root"));
 
 
-//# sourceMappingURL=index.645b2477.js.map
+//# sourceMappingURL=index.86793778.js.map
