@@ -21032,12 +21032,13 @@ var $d4J5n = parcelRequire("d4J5n");
 const $7ad86949296a565b$var$MAX_MAP = {
     minutes: 59,
     seconds: 59,
-    milliseconds: 999
+    centiseconds: 99
 };
+const $7ad86949296a565b$var$getRandomString = ()=>(Math.random() + 1).toString(36).substring(7);
 const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: setValue  })=>{
     const theme = (0, $cb404980a6d8b614$export$2e2bcd8739ae039)();
     const handleChange = (event)=>{
-        const type = event.target.name;
+        const type = event.target.labels[0].innerText;
         const max = $7ad86949296a565b$var$MAX_MAP[type];
         if (event.target.value.includes(".")) return;
         if (!Number.isInteger(Number(event.target.value))) return;
@@ -21061,7 +21062,7 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: s
         children: [
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
                 label: "minutes",
-                name: "minutes",
+                name: $7ad86949296a565b$var$getRandomString(),
                 value: value1.minutes,
                 variant: "outlined",
                 sx: {
@@ -21070,17 +21071,19 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: s
                 },
                 inputProps: {
                     inputMode: "numeric",
-                    pattern: "[0-9]*"
+                    pattern: "[0-9]*",
+                    autoComplete: "new-password"
                 },
                 InputLabelProps: {
                     shrink: true
                 },
-                onChange: handleChange
+                onChange: handleChange,
+                autoFocus: true
             }),
             ":",
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
                 label: "seconds",
-                name: "seconds",
+                name: $7ad86949296a565b$var$getRandomString(),
                 value: value1.seconds,
                 variant: "outlined",
                 sx: {
@@ -21089,7 +21092,8 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: s
                 },
                 inputProps: {
                     inputMode: "numeric",
-                    pattern: "[0-9]*"
+                    pattern: "[0-9]*",
+                    autoComplete: "new-password"
                 },
                 InputLabelProps: {
                     shrink: true
@@ -21098,9 +21102,9 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: s
             }),
             ".",
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $87b0d304f21f5b7f$export$2e2bcd8739ae039), {
-                label: "milliseconds",
-                name: "milliseconds",
-                value: value1.milliseconds,
+                label: "centiseconds",
+                name: $7ad86949296a565b$var$getRandomString(),
+                value: value1.centiseconds,
                 variant: "outlined",
                 sx: {
                     margin: theme.spacing(2),
@@ -21109,7 +21113,7 @@ const $7ad86949296a565b$export$a1af6f79df847fac = ({ value: value1 , setValue: s
                 inputProps: {
                     inputMode: "numeric",
                     pattern: "[0-9]*",
-                    maxLength: 3
+                    autoComplete: "new-password"
                 },
                 InputLabelProps: {
                     shrink: true
@@ -21136,10 +21140,12 @@ const $11e00a0f549302b4$export$a7132da7ba65e0e = ({ times: times , onClose: onCl
     // todo update any type
     const [rows, setRows] = (0, $d4J5n.useState)();
     (0, $d4J5n.useEffect)(()=>{
+        console.log("Test");
         // TODO this if is probably not needed
         if (times.length) {
             const sortedTimes = times.sort();
             const rowsObj = [];
+            console.log(sortedTimes.slice(0, 3));
             const bpa = $11e00a0f549302b4$var$average(sortedTimes.slice(0, 3));
             const wpa = $11e00a0f549302b4$var$average(sortedTimes.slice(1, 4));
             rowsObj.push($11e00a0f549302b4$var$createData("Best Possible Average", bpa));
@@ -21217,10 +21223,10 @@ const $63c221fb02ae68b7$var$SOLVES = [
 const $63c221fb02ae68b7$var$DEFAULT_TIMES = {
     minutes: "",
     seconds: "",
-    milliseconds: ""
+    centiseconds: ""
 };
 const $63c221fb02ae68b7$var$toOrdinal = (number)=>$63c221fb02ae68b7$var$SOLVES[number];
-const $63c221fb02ae68b7$var$timesInMilliseconds = (min, sec, ms)=>ms + min * 60000 + sec * 1000;
+const $63c221fb02ae68b7$var$timesInCentiseconds = (min, sec, cs)=>cs + min * 6000 + sec * 100;
 const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
     const theme = (0, $cb404980a6d8b614$export$2e2bcd8739ae039)();
     const [solveNum, setSolveNum] = (0, $d4J5n.useState)(0);
@@ -21230,10 +21236,10 @@ const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
     const advanceToNextSolve = ()=>{
         const min = parseInt(currentTime.minutes, 10) || 0;
         const sec = parseInt(currentTime.seconds, 10) || 0;
-        const ms = parseInt(currentTime.milliseconds, 10) || 0;
+        const cs = parseInt(currentTime.centiseconds, 10) || 0;
         setTimes((currentTimes)=>[
                 ...currentTimes,
-                $63c221fb02ae68b7$var$timesInMilliseconds(min, sec, ms) / 1000
+                $63c221fb02ae68b7$var$timesInCentiseconds(min, sec, cs) / 100
             ]);
         setCurrentTime($63c221fb02ae68b7$var$DEFAULT_TIMES);
         setSolveNum(solveNum + 1);
@@ -21244,6 +21250,9 @@ const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
     };
     const openDialog = ()=>setDialogOpen(true);
     const closeDialog = ()=>setDialogOpen(false);
+    const getFinalAverage = ()=>{
+    //TODO
+    };
     return /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $f2d8fe790f2a3612$export$2e2bcd8739ae039), {
         children: [
             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)((0, $af776c8e01c32094$export$2e2bcd8739ae039), {
@@ -21300,6 +21309,16 @@ const $63c221fb02ae68b7$export$7c6e2c02157bb7d2 = ()=>{
                                     marginTop: theme.spacing(3)
                                 },
                                 children: "Calculate best and worst possible averages"
+                            }),
+                            solveNum === 4 && /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $65c4d565b4687bd9$export$2e2bcd8739ae039), {
+                                onClick: getFinalAverage,
+                                variant: "contained",
+                                size: "large",
+                                fullWidth: true,
+                                sx: {
+                                    marginTop: theme.spacing(3)
+                                },
+                                children: "Get final average"
                             })
                         ]
                     })
@@ -21384,4 +21403,4 @@ const $0bb323785d371b81$export$86fbec116b87613f = ()=>{
 }), document.getElementById("root"));
 
 
-//# sourceMappingURL=index.3a152576.js.map
+//# sourceMappingURL=index.ae8e4f0f.js.map
