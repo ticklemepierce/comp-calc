@@ -51,13 +51,15 @@ export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Functio
       }}
     >
       <TextField
+        hiddenLabel
         label={"minutes"}
         name={getRandomString()}
         value={value.minutes}
-        variant="outlined"
+        variant="standard"
         sx={{
           margin: theme.spacing(2),
-          width: '100px',
+          marginLeft: 0,
+          width: '75px',
         }}
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}
@@ -66,13 +68,14 @@ export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Functio
       />     
       : 
       <TextField
+        hiddenLabel
         label={"seconds"}
         name={getRandomString()}
         value={value.seconds}
-        variant="outlined"
+        variant="standard"
         sx={{
           margin: theme.spacing(2),
-          width: '100px',
+          width: '75px',
         }}
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}
@@ -80,13 +83,15 @@ export const TimeInput = ({ value, setValue }: {value: IValue, setValue: Functio
       />
       .
       <TextField
+        hiddenLabel
         label={"centiseconds"}
         name={getRandomString()}
         value={value.centiseconds}
-        variant="outlined"
+        variant="standard"
         sx={{
           margin: theme.spacing(2),
-          width: '100px',
+          marginRight: 0,
+          width: '75px',
         }}
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', autoComplete: "new-password" }}
         InputLabelProps={{ shrink: true }}

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import {  
   Box,
   Button,
-  Paper,
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { TimeInput } from './time-input';
-import { ResultsDialog } from './results-dialog';
+import { Results } from './results';
 
 const SOLVES = ['first', 'second', 'third', 'fourth', 'fifth'];
 
@@ -17,55 +16,64 @@ const DEFAULT_TIMES = {
   centiseconds: '',
 }
 
+function average(nums: Array<number>) {
+  console.log(nums);
+  return nums.reduce((a, b) => (a + b)) / nums.length;
+}
+
 const toOrdinal = (number: number) => SOLVES[number];
 
-const timesInCentiseconds = (min: number, sec: number, cs: number) => cs + (min * 60 * 100) + (sec * 100);
+const timesInCentiseconds = (minutes: string, seconds: string, centiseconds: string) => {
+  const min = parseInt(minutes, 10) || 0;
+  const sec = parseInt(seconds, 10) || 0;
+  const cs = parseInt(centiseconds, 10) || 0;
+
+  return cs + (min * 60 * 100) + (sec * 100);
+};
 
 export const Content = () => {
   const theme = useTheme();
 
   const [solveNum, setSolveNum] = useState(0);
   const [currentTime, setCurrentTime] = useState(DEFAULT_TIMES);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const [finalAverage, setFinalAverage] = useState<number>();
 
   const [times, setTimes] = useState<Array<number>>([]);
 
   const advanceToNextSolve = () => {
-    const min = parseInt(currentTime.minutes, 10) || 0;
-    const sec = parseInt(currentTime.seconds, 10) || 0;
-    const cs = parseInt(currentTime.centiseconds, 10) || 0;
-
     setTimes((currentTimes) => ([
       ...currentTimes,
-      timesInCentiseconds(min, sec, cs) / 100
+      timesInCentiseconds(currentTime.minutes, currentTime.seconds, currentTime.centiseconds) / 100
     ]));
-
+    
     setCurrentTime(DEFAULT_TIMES);
     setSolveNum(solveNum + 1);
   }
 
   const handleSubmit = () => {
     advanceToNextSolve();
-    openDialog();
+    setResultsOpen(true);
   }
 
-  const openDialog = () => setDialogOpen(true);
-  const closeDialog = () => setDialogOpen(false);
-
   const getFinalAverage = () => {
-    //TODO
+    const finalTimes = [
+      ...times,
+      timesInCentiseconds(currentTime.minutes, currentTime.seconds, currentTime.centiseconds) / 100
+    ]
+    setResultsOpen(false);
+    setFinalAverage(average(finalTimes.sort().slice(1,-1)));
   }
   
   return (
     <Box>
-      <Paper 
-        elevation={3}
+      <Box 
         sx={{
           width: '50%',
           padding: theme.spacing(4),
           margin: theme.spacing(4, 'auto'),
           [theme.breakpoints.down('md')]: {
-            width: '95%',
+            width: '100%',
           },
           textAlign: 'center',
         }}
@@ -123,14 +131,15 @@ export const Content = () => {
             </Button>
           }
         </Box>
-      </Paper>
+      </Box>
 
-      { dialogOpen &&
-        <ResultsDialog 
-          open={dialogOpen}
-          times={times}
-          onClose={closeDialog}
-        />
+      { resultsOpen &&
+        <Results times={times} />
+      }
+      { finalAverage &&
+        <Typography component="p" variant="h5" sx={{textAlign: 'center'}}>
+          Awesome! You finished with a final average of {finalAverage.toFixed(2)}!
+        </Typography>
       }
     </Box>
   );
